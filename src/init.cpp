@@ -963,6 +963,28 @@ fMasterNode = GetBoolArg("-masternode", false);
     if (fServer)
         StartRPCThreads();
 
+BOOST_FOREACH(PAIRTYPE(std::string, CAdrenalineNodeConfig) adrenaline, pwalletMain->mapMyAdrenalineNodes)
+{
+    CAdrenalineNodeConfig c = adrenaline.second;
+    if(c.isLocal)
+    {
+    strMasterNodeAddr = c.sAddress;
+    strMasterNodePrivKey = c.sMasternodePrivKey;
+
+        CKey keyds;
+            CPubKey pubkeyds;
+    std::string errorMessage;
+            if(!darkSendSigner.SetKey(strMasterNodePrivKey, errorMessage, keyds, pubkeyds))
+            {
+                return InitError("Invalid masternodeprivkey. Please see documenation.");
+            }
+
+        activeMasternode.pubKeyMasternode = pubkeyds;
+        fMasterNode = true;
+        break;
+    }
+}
+
 #ifdef ENABLE_WALLET
     // Mine proof-of-stake blocks in the background
     if (!GetBoolArg("-staking", true))
@@ -983,6 +1005,10 @@ fMasterNode = GetBoolArg("-masternode", false);
 
 #ifdef ENABLE_WALLET
     if (pwalletMain) {
+BOOST_FOREACH(PAIRTYPE(std::string, CAdrenalineNodeConfig) adrenaline, pwalletMain->mapMyAdrenalineNodes)
+    {
+        uiInterface.NotifyAdrenalineNodeChanged(adrenaline.second);
+    }
         // Add wallet transactions that aren't already in a block to mapTransactions
         pwalletMain->ReacceptWalletTransactions();
 
