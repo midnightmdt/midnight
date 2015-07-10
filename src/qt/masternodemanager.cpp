@@ -305,7 +305,7 @@ void MasternodeManager::on_removeButton_clicked()
 void MasternodeManager::on_localButton_clicked()
 {
     bool bAlreadyHaveLocalTree = false;
-    // Check if a local banana tree already exists
+    // Check if a local Midnight Node already exists
     BOOST_FOREACH(PAIRTYPE(std::string, CAdrenalineNodeConfig) adrenaline, pwalletMain->mapMyAdrenalineNodes)
     {
         if(adrenaline.second.isLocal)
@@ -317,7 +317,7 @@ void MasternodeManager::on_localButton_clicked()
     if(bAlreadyHaveLocalTree)
     {
 	QMessageBox msg;
-        msg.setText("A local banana tree already exists.");
+        msg.setText("A local Midnight Node already exists.");
 	msg.exec();
 	return;
     }
@@ -334,7 +334,7 @@ void MasternodeManager::on_localButton_clicked()
     if(pwalletMain->GetBalance() < 5000.1*COIN)
     {
 	QMessageBox msg;
-        msg.setText("You must have at least 5000.1 NANAS to cover the 5000 NANAS collateral for a Banana Tree and the tx fee.");
+        msg.setText("You must have at least 5000.1 MDT to cover the 5000 MDT collateral for a Midnight Node and the tx fee.");
 	msg.exec();
 	return;
     }
@@ -342,14 +342,14 @@ void MasternodeManager::on_localButton_clicked()
     if (pwalletMain->IsLocked())
     {
 	QMessageBox msg;
-        msg.setText("Your wallet must be unlocked so that the 5000 NANAS collateral can be sent.");
+        msg.setText("Your wallet must be unlocked so that the 5000 MDT collateral can be sent.");
 	msg.exec();
 	return;
     }
 
     // Automatically create an entry for the local address
 	CAdrenalineNodeConfig c;
-        c.sAlias = "Local Banana Tree";
+        c.sAlias = "Local Midnight Node";
 	c.sAddress = GetLocalAddress(NULL).ToStringIPPort();
         CKey secret;
         secret.MakeNewKey(false);
@@ -429,7 +429,7 @@ void MasternodeManager::on_localButton_clicked()
     else
     {
 	QMessageBox msg;
-	std::string sMsg = "Local Banana Tree created and 5000 NANAS sent to the collateral address.  Transaction hash:\n";
+	std::string sMsg = "Local Midnight Node created and 5000 MDT sent to the collateral address.  Transaction hash:\n";
 	sMsg += wtx.GetHash().GetHex();
         msg.setText(QString::fromStdString(sMsg));
 	msg.exec();
@@ -455,7 +455,7 @@ void MasternodeManager::on_startButton_clicked()
 
     QMessageBox msg;
     if(result)
-        msg.setText("Adrenaline Node at " + QString::fromStdString(c.sAddress) + " started.");
+        msg.setText("Midnight Node at " + QString::fromStdString(c.sAddress) + " started.");
     else
         msg.setText("Error: " + QString::fromStdString(errorMessage));
 
@@ -480,7 +480,7 @@ void MasternodeManager::on_stopButton_clicked()
     QMessageBox msg;
     if(result)
     {
-        msg.setText("Adrenaline Node at " + QString::fromStdString(c.sAddress) + " stopped.");
+        msg.setText("Midnight Node at " + QString::fromStdString(c.sAddress) + " stopped.");
     }
     else
     {
